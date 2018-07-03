@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+#require "evok-to-mqtt.rb"
+
+unless ARGV[0] || ARGV[1]
+  puts "Usage: evok-to-mqtt <evok_host> <mqtt_host>"
+  return 1
+end
+
+EvokToMqtt.run(ARGV[0], ARGV[1])
