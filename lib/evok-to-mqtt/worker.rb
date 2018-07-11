@@ -1,8 +1,10 @@
+require 'websocket-client-simple'
+
 module EvokToMqtt
   class Worker
     def initialize(evok_host, mqtt_host)
-      @evok = WebSocket::Client::Simple.connect("ws://#{evok_host}:8080/ws")
-      @mqtt = MQTT::Client.connect(mqtt_host)
+      @evok = ::WebSocket::Client::Simple.connect("ws://#{evok_host}:8080/ws")
+      @mqtt = ::MQTT::Client.connect(mqtt_host)
     end
 
     def run

@@ -3,6 +3,9 @@
 require "bundler/setup"
 #require "evok-to-mqtt.rb"
 
+# load everything
+Dir['./lib/**/*.rb'].each{ |f| require f }
+
 unless ARGV[0] || ARGV[1]
   puts "Usage: evok-to-mqtt <evok_host> <mqtt_host>"
   return 1
