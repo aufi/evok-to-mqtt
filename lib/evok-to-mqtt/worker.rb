@@ -1,27 +1,42 @@
-require 'websocket-client-simple'
+require 'eventmachine'
+require 'faye/websocket'
+require 'json'
+require 'em/mqtt'
 
 module EvokToMqtt
   class Worker
     def initialize(evok_host, mqtt_host)
-      @evok = ::WebSocket::Client::Simple.connect("ws://#{evok_host}:8080/ws")
-      @mqtt = ::MQTT::Client.connect(mqtt_host)
+      #@evok = ::Faye::WebSocket::Client.new("ws://#{evok_host}:8080/ws")
+      @evok_host = evok_host
+      #@mqtt = ::MQTT::Client.connect(mqtt_host)
+      @mqtt_host = mqtt_host
     end
 
     def run
-      setup_evok_callbacks
-      loop do
-        puts "#{Time.now} #{@evok.inspect} #{@mqtt.inspect}"
-        sleep 600
-      end
-    end
+      EM.run do
+        @evok = ::Faye::WebSocket::Client.new("ws://#{@evok_host}:8080/ws")
 
-    private
+        @evok.on :message do |msg|
+         puts Time.now
+         JSON.parse(msg.data).each do |event|
+           puts event
+           @mqtt.publish event["circuit"], event
+         end
+        end
 
-    def setup_evok_callbacks
-      @evok.on :message do |msg|
-       puts Time.now
-       p msg
-       #@mqtt.publish topic, message, retain
+        #@mqtt = ::MQTT::Client.connect(@mqtt_host)
+        @mqtt = ::EventMachine::MQTT::ClientConnection.connect(@mqtt_host)
+
+        @mqtt.subscribe('neuron/#')
+        #@mqtt.get do |topic,message|
+        #  puts "################################"
+        #  puts topic
+        #  puts message
+        #end
+        @mqtt.receive_callback do |message|
+          p message.methods
+        end
+
       end
     end
   end

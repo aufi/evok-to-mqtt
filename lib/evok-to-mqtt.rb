@@ -1,5 +1,6 @@
 # load everything
 #Dir['./lib/**/*.rb'].each{ |f| require f }
+#require "pry"
 
 module EvokToMqtt
   def self.run(evok_host, mqtt_host)
