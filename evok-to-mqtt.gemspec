@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{A bridge between Unipi's EVOK and MQTT message bus}
   spec.description   = %q{A bridge between Unipi's EVOK and MQTT message bus as Ruby gem}
   spec.homepage      = "https://github.com/aufi/evok-to-mqtt"
-  spec.license       = "apache"
+  spec.license       = "Apache-2.0"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -30,9 +30,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "websocket-eventmachine-client"
-  spec.add_dependency "em-mqtt"
-  #spec.add_dependency "finite_machine"
+  spec.add_dependency "websocket-eventmachine-client", "~> 1.2"
+  spec.add_dependency "em-mqtt", "~> 0.0.5"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
