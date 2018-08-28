@@ -30,8 +30,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "faye-websocket"
+  spec.add_dependency "websocket-eventmachine-client"
   spec.add_dependency "em-mqtt"
+  #spec.add_dependency "finite_machine"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
