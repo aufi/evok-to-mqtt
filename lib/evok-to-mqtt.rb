@@ -4,7 +4,7 @@
 
 module EvokToMqtt
   def self.run(evok_host, mqtt_host)
-    app = EvokToMqtt::Worker.new(evok_host, mqtt_host)
+    app = EvokToMqtt::Worker.new(evok_host, mqtt_host, EvokToMqtt::Mappers::ToHaab.new)
     app.run
   end
 end

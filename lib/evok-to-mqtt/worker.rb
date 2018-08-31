@@ -5,11 +5,10 @@ require 'em/mqtt'
 
 module EvokToMqtt
   class Worker
-    def initialize(evok_host, mqtt_host)
-      #@evok = ::Faye::WebSocket::Client.new("ws://#{evok_host}:8080/ws")
+    def initialize(evok_host, mqtt_host, mapper)
       @evok_host = evok_host
-      #@mqtt = ::MQTT::Client.connect(mqtt_host)
       @mqtt_host = mqtt_host
+      @mapper    = mapper
     end
 
     def run
@@ -18,10 +17,9 @@ module EvokToMqtt
         @mqtt = ::EventMachine::MQTT::ClientConnection.connect(@mqtt_host)
 
         @evok.onmessage do |msg|
-          # puts "Recieved message: #{msg}"
+          puts "Recieved message: #{msg}"
           JSON.parse(msg).each do |event|
-            puts event
-            @mqtt.publish event["circuit"], event
+            @mapper.process(@mqtt, event)
           end
         end
 

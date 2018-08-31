@@ -4,19 +4,7 @@ A bridge between Unipi's EVOK and MQTT message bus. It uses websockets to connec
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'evok-to-mqtt'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install evok-to-mqtt
+$ gem install evok-to-mqtt
 
 ## Usage
 
@@ -32,7 +20,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/evok-to-mqtt.
+Bug reports and pull requests are welcome on GitHub at https://github.com/aufi/evok-to-mqtt.
 
 ## License
 

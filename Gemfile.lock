@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    evok-to-mqtt (0.1.0)
-      em-mqtt
-      websocket-eventmachine-client
+    evok-to-mqtt (0.1.1)
+      em-mqtt (~> 0.0.5)
+      websocket-eventmachine-client (~> 1.2)
 
 GEM
   remote: https://rubygems.org/
