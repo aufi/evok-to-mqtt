@@ -1,5 +1,6 @@
 require "bundler/setup"
-require "evok/to/mqtt"
+
+Dir['./lib/**/*.rb'].each{ |f| require f }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

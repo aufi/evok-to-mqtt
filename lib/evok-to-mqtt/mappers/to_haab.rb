@@ -8,7 +8,7 @@ module EvokToMqtt
       def process(mqtt, evok_event)
         # puts "Statuses"
         # p @statuses
-        id      = "neuron/input/#{evok_event["circuit"]}"
+        id      = "neuron/#{evok_event["dev"]}/#{evok_event["circuit"]}"
         now     = Time.now
         payload = evok_event
 
