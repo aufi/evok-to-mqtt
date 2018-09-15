@@ -1,14 +1,13 @@
 module EvokToMqtt
   module Mappers
     class ToHaab
-      def initialize
+      def initialize(mapping)
+        @mapping  = mapping
         @statuses = {}
       end
 
       def process(mqtt, evok_event)
-        # puts "Statuses"
-        # p @statuses
-        id      = "neuron/#{evok_event["dev"]}/#{evok_event["circuit"]}"
+        id      = get_topic(evok_event["dev"], evok_event["circuit"])
         now     = Time.now
         payload = evok_event
 
@@ -26,6 +25,17 @@ module EvokToMqtt
         else
           @statuses[id] = {value: evok_event['value'], changed_at: now}
           mqtt.publish id, {action: 'down', data: payload}
+        end
+      end
+
+      private
+
+      def get_topic(dev, circuit)
+        begin
+          return @mapping[dev][circuit]
+        rescue KeyError => ex
+          puts "Warning: #{ex}, using raw topic"
+          return "neuron_raw/#{dev}/#{circuit}"
         end
       end
     end

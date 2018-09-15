@@ -1,0 +1,14 @@
+# EXAMPLE
+#
+# mistnosti:
+# obyvak, kuchyn, dolni_chodba, horni_chodba, pracovna, dolni_koupelna, tech_mistnost, loznice, horni_koupelna, zachod, detsky_pokoj_2, detsky_pokoj_honza
+#
+
+---
+  relay:
+    1_01: obyvak/svetlo
+  input:
+    1_01: obyvak/tlacitko_dvere_l
+    1_02: obyvak/tlacitko_dvere_p
+  ai:
+    1_01: dum/svetlo_venku
