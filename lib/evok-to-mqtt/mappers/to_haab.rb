@@ -32,10 +32,10 @@ module EvokToMqtt
 
       def get_topic(dev, circuit)
         begin
-          return @mapping[dev][circuit]
+          return @mapping[dev][circuit] || "neuron_raw/#{dev}/#{circuit}" # missing circuit
         rescue KeyError => ex
           puts "Warning: #{ex}, using raw topic"
-          return "neuron_raw/#{dev}/#{circuit}"
+          return "neuron_raw/#{dev}/#{circuit}" # missing section (dev)
         end
       end
     end
