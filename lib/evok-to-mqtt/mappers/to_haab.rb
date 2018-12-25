@@ -11,6 +11,8 @@ module EvokToMqtt
         now     = Time.now
         payload = evok_event
 
+        puts "Target topic: #{id}"
+
         # Neuron input is assumed for now
         if @statuses[id]
           if @statuses[id][:value] == 0 && evok_event['value'] == 1
@@ -32,10 +34,10 @@ module EvokToMqtt
 
       def get_topic(dev, circuit)
         begin
-          return @mapping[dev][circuit] || "neuron_raw/#{dev}/#{circuit}" # missing circuit
-        rescue KeyError => ex
+          return @mapping[dev][circuit] || "evok_raw/#{dev}/#{circuit}" # missing circuit
+        rescue => ex
           puts "Warning: #{ex}, using raw topic"
-          return "neuron_raw/#{dev}/#{circuit}" # missing section (dev)
+          return "evok_raw/#{dev}/#{circuit}" # missing section (dev)
         end
       end
     end
