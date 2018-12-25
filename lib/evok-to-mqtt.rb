@@ -1,5 +1,6 @@
-# load everything
-#Dir['./lib/**/*.rb'].each{ |f| require f }
+require 'evok-to-mqtt/mappers/to_haab'
+require 'evok-to-mqtt/version'
+require 'evok-to-mqtt/worker'
 require 'yaml'
 
 module EvokToMqtt
