@@ -8,6 +8,8 @@ $ gem install evok-to-mqtt
 
 ## Usage
 
+Prepare mapping config file ```evok-to-mqtt-mapping.yml``` from [evok-to-mqtt-mapping.yml.example](https://raw.githubusercontent.com/aufi/evok-to-mqtt/master/evok-to-mqtt-mapping.yml.example).
+
 ```bash
 $ evok-to-mqtt <evok_hostname> <mqtt_host>
 ```

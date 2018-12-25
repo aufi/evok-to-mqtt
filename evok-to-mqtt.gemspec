@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Marek Aufart"]
   spec.email         = ["aufi.cz@gmail.com"]
 
-  spec.summary       = %q{A bridge between Unipi's EVOK and MQTT message bus}
-  spec.description   = %q{A bridge between Unipi's EVOK and MQTT message bus as Ruby gem}
+  spec.summary       = %q{A bridge between Unipi EVOK and MQTT message bus}
+  spec.description   = %q{A bridge between Unipi EVOK and MQTT message bus as Ruby gem}
   spec.homepage      = "https://github.com/aufi/evok-to-mqtt"
   spec.license       = "Apache-2.0"
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
