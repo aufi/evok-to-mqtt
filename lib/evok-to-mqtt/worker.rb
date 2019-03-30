@@ -1,8 +1,9 @@
-require 'eventmachine'
-require 'websocket-eventmachine-client'
-require 'json'
 require 'em/mqtt'
+require 'eventmachine'
+require 'json'
+require 'jsonrpc-client'
 require 'net/http'
+require 'websocket-eventmachine-client'
 
 module EvokToMqtt
   class Worker
@@ -14,11 +15,11 @@ module EvokToMqtt
 
     def run
       EM.run do
-        @evok = WebSocket::EventMachine::Client.connect(:uri => "ws://#{@evok_host}:8080/ws")
-        @mqtt = EventMachine::MQTT::ClientConnection.connect(@mqtt_host)
-        #@evok_rpc = JSONRPC::Client.new(evok_host)
+        @evok_ws  = WebSocket::EventMachine::Client.connect(:uri => "ws://#{@evok_host}:8080/ws")
+        @evok_rpc = JSONRPC::Client.new("http://#{@evok_host}/rpc")
+        @mqtt     = EventMachine::MQTT::ClientConnection.connect(@mqtt_host)
 
-        @evok.onmessage do |msg|
+        @evok_ws.onmessage do |msg|
           data = JSON.parse(msg)
           data = [data] if data.is_a? Hash # temp is not in array in evok messages, but in hash..
           data.each do |event|
@@ -28,13 +29,12 @@ module EvokToMqtt
           end
         end
 
-        @mqtt.subscribe('neuron/relay/#')
+        @mqtt.subscribe('relay/#')
         @mqtt.receive_callback do |msg|
-          # WS set did not work, using REST for now
           data = JSON.parse(msg.payload)
-          puts "Sending command #{msg.topic} => #{data['value']}"
-          uri = URI("http://#{@evok_host}/rest/#{data['dev']}/#{data['circuit']}")
-          Net::HTTP.post_form(uri, 'value' => data['value'])
+          circuit = data['circuit'] || @mapper.circuit_reverse_lookup(msg.topic)
+          puts "Sending command #{msg.topic}: #{circuit} => #{data['value']}"
+          @evok_rpc.relay_set(circuit, data['value'])
         end
       end
     end

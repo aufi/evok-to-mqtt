@@ -2,7 +2,7 @@ module EvokToMqtt
   module Mappers
     class ToHaab
       def initialize(mapping)
-        @mapping  = mapping
+        @mapping_config  = mapping
         @statuses = {}
       end
 
@@ -36,11 +36,18 @@ module EvokToMqtt
         puts
       end
 
+      def circuit_reverse_lookup(full_topic)
+        dev, topic = full_topic.split("/", 2)
+        @mapping_config[dev].each{|pin, a_topic| return pin if a_topic == topic}
+        puts "Warning: #{topic} pin was not found."
+        nil
+      end
+
       private
 
       def get_topic(dev, circuit)
         begin
-          return @mapping[dev][circuit] || "evok/#{dev}/#{circuit}" # missing circuit
+          return @mapping_config[dev][circuit] || @mapping_config[dev]['click'][circuit] || @mapping_config[dev]['toggle'][circuit] || "evok/#{dev}/#{circuit}" # missing circuit
         rescue => ex
           puts "Warning: #{ex}, using raw topic"
           return "evok/#{dev}/#{circuit}" # missing section (dev)
