@@ -1,3 +1,5 @@
+require 'date'
+
 module EvokToMqtt
   module Mappers
     class ToHaab
@@ -11,19 +13,22 @@ module EvokToMqtt
         now     = Time.now
         payload = evok_event
 
+        timestamp = DateTime.now.iso8601(3)
+
         puts "Target topic: #{id}"
 
         # Neuron input is assumed for now
         if @statuses[id]
+          # TODO: input dev only makes sense for this branch
           if @statuses[id][:value] == 0 && evok_event['value'] == 1
             #mqtt.publish id, {action: 'down', data: payload}
           elsif @statuses[id][:value] == 1 && evok_event['value'] == 0
             #mqtt.publish id, {action: 'up', data: payload}
             if now - @statuses[id][:changed_at] < 2  # seconds
-              mqtt.publish id, {action: 'click', data: payload}
+              mqtt.publish id, {action: 'click', data: payload, timestamp: timestamp}.to_json
               puts "### click"
             else
-              mqtt.publish id, {action: 'long_click', data: payload}
+              mqtt.publish id, {action: 'long_click', data: payload, timestamp: timestamp}.to_json
               puts "### long_click"
             end
           end
