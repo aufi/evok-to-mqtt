@@ -38,6 +38,9 @@ module EvokToMqtt
           @statuses[id] = {value: evok_event['value'], changed_at: now}
           #mqtt.publish id, {action: 'down', data: payload} unless evok_event['value'] == 0  # ignore initial states received in batch
         end
+
+        mqtt.publish id, {action: 'change', data: payload, timestamp: timestamp}.to_json, retain: true if evok_event['dev'] == 'temp'
+
         puts
       end
 
