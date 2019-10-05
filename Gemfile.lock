@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    evok-to-mqtt (0.4.0)
+    evok-to-mqtt (0.4.1)
       em-mqtt (~> 0.0.5)
       jsonrpc-client (~> 0.1.3)
       slop (~> 4.7.0)
