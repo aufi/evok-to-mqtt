@@ -40,7 +40,7 @@ module EvokToMqtt
             data = {}
           end
           next unless data['action'] == 'cmd'
-          circuit = data['circuit'] || @mapper.circuit_reverse_lookup(msg.topic)
+          circuit = data['circuit'] || @mapper.circuit_reverse_lookup('relay', msg.topic) || next
           puts "#{Time.now} Sending command #{msg.topic}: #{circuit} => #{data['value']}"
           @evok_rpc.relay_set(circuit, data['value'])
         end
