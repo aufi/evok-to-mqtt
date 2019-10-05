@@ -45,8 +45,7 @@ module EvokToMqtt
       end
 
       def circuit_reverse_lookup(section, full_topic)
-        dev, topic = full_topic.split("/", 2)
-        @mapping_config[section].each{|pin, a_topic| return pin if a_topic == topic}
+        @mapping_config[section].each{|pin, a_topic| return pin if a_topic == full_topic}
         puts "Warning: #{topic} pin was not found."
         nil
       end
