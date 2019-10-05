@@ -24,7 +24,7 @@ module EvokToMqtt
           data = [data] if data.is_a? Hash # temp is not in array in evok messages, but in hash..
           data.each do |event|
             next if !event.is_a?(Hash) || %w(wd ai ao relay).include?(event['dev']) # want just input and temp, skip the rest for now
-            puts "Recieved message: #{event}"
+            puts "#{Time.now} Recieved message: #{event}"
             @mapper.process(@mqtt, event)
           end
         end
@@ -33,7 +33,7 @@ module EvokToMqtt
         @mqtt.receive_callback do |msg|
           data = JSON.parse(msg.payload)
           circuit = data['circuit'] || @mapper.circuit_reverse_lookup(msg.topic)
-          puts "Sending command #{msg.topic}: #{circuit} => #{data['value']}"
+          puts "#{Time.now} Sending command #{msg.topic}: #{circuit} => #{data['value']}"
           @evok_rpc.relay_set(circuit, data['value'])
         end
       end
