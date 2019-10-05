@@ -1,9 +1,19 @@
 #!/usr/bin/env ruby
 
 require "evok-to-mqtt"
+require "slop"
 
-unless ARGV[0] || ARGV[1]
-  raise "Usage: evok-to-mqtt <evok_host> <mqtt_host>"
+opts = Slop.parse do |opt|
+  opt.string "-c", "--config", "Config/mapping file path", default: "./evok-to-mqtt-mapping.yml"
+  opt.string "--evok-host", "Hostname or IP where Evok API is running", default: "localhost"
+  opt.string "--mqtt-host", "Hostname or IP where MQTT server is running", default: "localhost"
+  opt.on "-h", "--help", "Show help" do
+    puts "Usage: evok-to-mqtt --config evok-to-mqtt-mapping.yml --evok-host localhost --mqtt-host localhost"
+    exit 0
+  end
 end
 
-EvokToMqtt.run(ARGV[0], ARGV[1])
+puts "Starting evok-to-mqtt with options:"
+p opts.to_hash
+
+EvokToMqtt.run(opts)
