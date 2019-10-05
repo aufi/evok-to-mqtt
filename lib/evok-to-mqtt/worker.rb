@@ -32,7 +32,13 @@ module EvokToMqtt
         # send commands to relay only for now, maybe do more lightweight not to subscribe to everything
         @mqtt.subscribe('#')
         @mqtt.receive_callback do |msg|
-          data = JSON.parse(msg.payload)
+          begin
+            data = JSON.parse(msg.payload)
+          rescue => ex
+            puts "Error: Received invalid message on the bus"
+            p msg.payload
+            data = {}
+          end
           next unless data['action'] == 'cmd'
           circuit = data['circuit'] || @mapper.circuit_reverse_lookup(msg.topic)
           puts "#{Time.now} Sending command #{msg.topic}: #{circuit} => #{data['value']}"
